@@ -5,35 +5,22 @@ document.addEventListener("DOMContentLoaded", function () {
   const themeIcon = document.getElementById("theme-icon");
 
   // Check for saved theme preference or default to dark
-  const currentTheme = localStorage.getItem("theme") || "dark";
-
-  // Apply initial theme
-  if (currentTheme === "light") {
-    document.body.classList.add("light-theme");
-  } else {
-    document.body.classList.remove("light-theme");
-  }
-
-  // Update icon based on current theme
-  updateThemeIcon(currentTheme);
+  const savedTheme = localStorage.getItem("theme") || "dark";
+  setTheme(savedTheme);
 
   // Theme toggle click handler
   themeToggle.addEventListener("click", function () {
-    const isLightTheme = document.body.classList.contains("light-theme");
-    const newTheme = isLightTheme ? "dark" : "light";
-
-    // Update theme
-    if (newTheme === "light") {
-      document.body.classList.add("light-theme");
-    } else {
-      document.body.classList.remove("light-theme");
-    }
-
-    localStorage.setItem("theme", newTheme);
-
-    // Update icon
-    updateThemeIcon(newTheme);
+    const currentTheme =
+      document.documentElement.getAttribute("data-theme") || "dark";
+    const newTheme = currentTheme === "dark" ? "light" : "dark";
+    setTheme(newTheme);
   });
+
+  function setTheme(theme) {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+    updateThemeIcon(theme);
+  }
 
   function updateThemeIcon(theme) {
     if (theme === "light") {
